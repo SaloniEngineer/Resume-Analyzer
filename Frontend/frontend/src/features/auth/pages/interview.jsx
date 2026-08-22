@@ -60,7 +60,8 @@ const Interview = () => {
     try {
       setDownloading(true);
 
-      const response = await fetch('http://localhost:3000/api/generate-resume-pdf', {
+      //const response = await fetch('http://localhost:3000/api/generate-resume-pdf', {
+      fetch('https://resume-analyzer-8ls7.onrender.com/api/generate-resume-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
