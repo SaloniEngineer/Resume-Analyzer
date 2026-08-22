@@ -1,6 +1,3 @@
-
-
-
 const express = require('express');
 const app = express();
 const cookiesParser = require('cookie-parser');
@@ -9,8 +6,9 @@ const cors = require('cors');
 //  middleware
 app.use(express.json());
 app.use(cookiesParser());
+
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'https://resume-analyzer-one-peach.vercel.app'],
     credentials: true
 }));
 
