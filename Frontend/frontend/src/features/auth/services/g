@@ -1,0 +1,231 @@
+technicalQuestions: [
+  {
+    "question": "How do you approach debugging a complex issue in a Node.js application?",
+    "intention": "To assess problem-solving skills and familiarity with Node.js",
+    "answer": "The candidate should describe a structured approach to debugging, including the use of logging, error handling, and debugging tools like Node Inspector."
+  },
+  {
+    "question": "Can you explain the differences between MongoDB and MySQL?",
+    "intention": "To evaluate knowledge of database systems and their use cases",
+    "answer": "The candidate should highlight the key differences between NoSQL and relational databases, including data modeling, schema flexibility, and scalability."
+  }
+]technicalQuestions: [
+  {
+    "question": "How do you approach debugging a complex issue in a Node.js application?",
+    "intention": "To assess problem-solving skills and familiarity with Node.js",
+    "answer": "The candidate should describe a structured approach to debugging, including the use of logging, error handling, and debugging tools like Node Inspector."
+  },
+  {
+    "question": "Can you explain the differences between MongoDB and MySQL?",
+    "intention": "To evaluate knowledge of database systems and their use cases",
+    "answer": "The candidate should highlight the key differences between NoSQL and relational databases, including data modeling, schema flexibility, and scalability."
+  }
+]
+{
+  "_id": {
+    "$oid": "6a478fbb5c70832a7663c9b7"
+  },
+  "jobDescription": "Looking for a Full Stack MERN Developer skilled in React.js, Node.js, Express.js, and MongoDB. Responsible for developing and maintaining web applications, building RESTful APIs, and working with databases.",
+  "selfDescription": "MERN Stack Developer skilled in building full-stack web applications using MongoDB, Express.js, React.js, and Node.js. Experienced in developing RESTful APIs, integrating databases, and creating responsive, user-friendly interfaces. Passionate about writing clean, efficient code and solving real-world problems through technology.",
+  "matchScore": 92,
+  "technicalQuestions": [
+    {
+      "question": "How do you approach debugging a complex issue in a Node.js application?",
+      "intention": "To assess problem-solving skills and familiarity with Node.js",
+      "answer": "The candidate should describe a structured approach to debugging, including the use of logging, error handling, and debugging tools like Node Inspector."
+    },
+    {
+      "question": "Can you explain the differences between MongoDB and MySQL?",
+      "intention": "To evaluate knowledge of database systems and their use cases",
+      "answer": "The candidate should highlight the key differences between NoSQL and relational databases, including data modeling, schema flexibility, and scalability."
+    }
+  ],
+  "behavioralQuestions": [
+    {
+      "question": "Tell me about a time when you had to collaborate with a team to solve a complex technical problem.",
+      "intention": "To assess teamwork and communication skills",
+      "answer": "The candidate should describe a specific scenario, highlighting their role, the challenges faced, and how they contributed to the solution, emphasizing collaboration and communication."
+    },
+    {
+      "question": "How do you handle feedback or criticism of your code?",
+      "intention": "To evaluate the candidate's attitude towards continuous improvement and feedback",
+      "answer": "The candidate should express a positive attitude towards feedback, describing how they use it as an opportunity to learn and improve their coding skills."
+    }
+  ],
+  "skillGaps": [
+    {
+      "skill": "Cloud Computing",
+      "severity": "medium"
+    },
+    {
+      "skill": "Cybersecurity",
+      "severity": "high"
+    },
+    {
+      "skill": "Data Structures and Algorithms",
+      "severity": "low"
+    }
+  ],
+  "preparationPlan": [
+    {
+      "day": 1,
+      "focus": "Review of Node.js and Express.js fundamentals",
+      "tasks": [
+        "Complete Node.js tutorials on FreeCodeCamp",
+        "Practice building a simple RESTful API with Express.js"
+      ]
+    },
+    {
+      "day": 2,
+      "focus": "React.js and frontend development",
+      "tasks": [
+        "Review React.js documentation",
+        "Build a simple React.js application"
+      ]
+    },
+    {
+      "day": 3,
+      "focus": "Database systems and MongoDB",
+      "tasks": [
+        "Study MongoDB documentation",
+        "Practice querying a MongoDB database"
+      ]
+    },
+    {
+      "day": 4,
+      "focus": "Cloud computing and cybersecurity",
+      "tasks": [
+        "Research cloud computing platforms",
+        "Study cybersecurity best practices"
+      ]
+    },
+    {
+      "day": 5,
+      "focus": "Data structures and algorithms",
+      "tasks": [
+        "Practice solving algorithmic challenges on LeetCode",
+        "Review data structures like arrays, linked lists, and trees"
+      ]
+    },
+    {
+      "day": 6,
+      "focus": "Full-stack development and system design",
+      "tasks": [
+        "Design a simple full-stack application",
+        "Practice system design interviews"
+      ]
+    },
+    {
+      "day": 7,
+      "focus": "Mock interviews and final preparation",
+      "tasks": [
+        "Participate in mock interviews",
+        "Review all technical concepts and practice answering behavioral questions"
+      ]
+    }
+  ],
+  
+{
+  "_id": {
+    "$oid": "6a478fbb5c70832a7663c9b7"
+  },
+  "jobDescription": "Looking for a Full Stack MERN Developer skilled in React.js, Node.js, Express.js, and MongoDB. Responsible for developing and maintaining web applications, building RESTful APIs, and working with databases.",
+  "selfDescription": "MERN Stack Developer skilled in building full-stack web applications using MongoDB, Express.js, React.js, and Node.js. Experienced in developing RESTful APIs, integrating databases, and creating responsive, user-friendly interfaces. Passionate about writing clean, efficient code and solving real-world problems through technology.",
+  "matchScore": 92,
+  "technicalQuestions": [
+    {
+      "question": "How do you approach debugging a complex issue in a Node.js application?",
+      "intention": "To assess problem-solving skills and familiarity with Node.js",
+      "answer": "The candidate should describe a structured approach to debugging, including the use of logging, error handling, and debugging tools like Node Inspector."
+    },
+    {
+      "question": "Can you explain the differences between MongoDB and MySQL?",
+      "intention": "To evaluate knowledge of database systems and their use cases",
+      "answer": "The candidate should highlight the key differences between NoSQL and relational databases, including data modeling, schema flexibility, and scalability."
+    }
+  ],
+  "behavioralQuestions": [
+    {
+      "question": "Tell me about a time when you had to collaborate with a team to solve a complex technical problem.",
+      "intention": "To assess teamwork and communication skills",
+      "answer": "The candidate should describe a specific scenario, highlighting their role, the challenges faced, and how they contributed to the solution, emphasizing collaboration and communication."
+    },
+    {
+      "question": "How do you handle feedback or criticism of your code?",
+      "intention": "To evaluate the candidate's attitude towards continuous improvement and feedback",
+      "answer": "The candidate should express a positive attitude towards feedback, describing how they use it as an opportunity to learn and improve their coding skills."
+    }
+  ],
+  "skillGaps": [
+    {
+      "skill": "Cloud Computing",
+      "severity": "medium"
+    },
+    {
+      "skill": "Cybersecurity",
+      "severity": "high"
+    },
+    {
+      "skill": "Data Structures and Algorithms",
+      "severity": "low"
+    }
+  ],
+  "preparationPlan": [
+    {
+      "day": 1,
+      "focus": "Review of Node.js and Express.js fundamentals",
+      "tasks": [
+        "Complete Node.js tutorials on FreeCodeCamp",
+        "Practice building a simple RESTful API with Express.js"
+      ]
+    },
+    {
+      "day": 2,
+      "focus": "React.js and frontend development",
+      "tasks": [
+        "Review React.js documentation",
+        "Build a simple React.js application"
+      ]
+    },
+    {
+      "day": 3,
+      "focus": "Database systems and MongoDB",
+      "tasks": [
+        "Study MongoDB documentation",
+        "Practice querying a MongoDB database"
+      ]
+    },
+    {
+      "day": 4,
+      "focus": "Cloud computing and cybersecurity",
+      "tasks": [
+        "Research cloud computing platforms",
+        "Study cybersecurity best practices"
+      ]
+    },
+    {
+      "day": 5,
+      "focus": "Data structures and algorithms",
+      "tasks": [
+        "Practice solving algorithmic challenges on LeetCode",
+        "Review data structures like arrays, linked lists, and trees"
+      ]
+    },
+    {
+      "day": 6,
+      "focus": "Full-stack development and system design",
+      "tasks": [
+        "Design a simple full-stack application",
+        "Practice system design interviews"
+      ]
+    },
+    {
+      "day": 7,
+      "focus": "Mock interviews and final preparation",
+      "tasks": [
+        "Participate in mock interviews",
+        "Review all technical concepts and practice answering behavioral questions"
+      ]
+    }
+  ],
+  

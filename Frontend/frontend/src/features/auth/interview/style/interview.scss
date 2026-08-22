@@ -1,0 +1,524 @@
+* {
+  box-sizing: border-box;
+}
+
+.interview-page {
+  min-height: 100vh;
+  padding: 28px;
+  background: linear-gradient(135deg, #06070b 0%, #0c1118 100%);
+  color: #e5e7eb;
+  overflow-x: hidden;
+}
+.interview-page__wrapper {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) 300px;
+  gap: 24px;
+  width: 100%;
+  max-width: 1350px;
+  margin: 0 auto;
+  align-items: start;
+}
+.interview-page__sidebar,
+.interview-page__meta,
+.interview-page__summary-card,
+.roadmap-card,
+.technical-question-card {
+  background: #12141c;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+}
+
+.interview-page__sidebar,
+.interview-page__meta {
+  padding: 24px;
+  min-width: 0;
+}
+
+.interview-page__sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: sticky;
+  top: 24px;
+  height: fit-content;
+}
+
+.interview-page__meta {
+  position: sticky;
+  top: 24px;
+  height: fit-content;
+}
+
+.interview-page__sidebar-header {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.interview-page__sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.interview-page__sidebar-link {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(226, 232, 240, 0.08);
+  background: rgba(244, 63, 94, 0.08);
+  color: #f8fafc;
+  text-align: left;
+  padding: 16px 18px;
+  border-radius: 18px;
+  font-size: 0.97rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.sidebar-link-icon {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.interview-page__sidebar-link:hover {
+  background: rgba(244, 63, 94, 0.18);
+  transform: scale(1.01);
+}
+
+.interview-page__sidebar-link.active {
+  background: rgba(236, 72, 153, 0.18);
+  border-color: rgba(244, 63, 94, 0.4);
+}
+
+.accordion-list {
+  display: grid;
+  gap: 16px;
+}
+
+.accordion-card {
+  background: #10131d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+}
+
+.accordion-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px 22px;
+  background: transparent;
+  color: #f8fafc;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.accordion-button:hover {
+  background: rgba(244, 63, 94, 0.08);
+}
+
+.accordion-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+}
+
+.accordion-number {
+  min-width: 42px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(244, 63, 94, 0.16);
+  color: #f8fafc;
+  font-size: 0.92rem;
+  flex-shrink: 0;
+}
+
+.accordion-question {
+  color: #f8fafc;
+  font-weight: 600;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.accordion-icon {
+  font-size: 1.5rem;
+  color: #f8fafc;
+  flex-shrink: 0;
+}
+
+.accordion-panel {
+  padding: 18px 22px 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.accordion-intent {
+  margin: 0 0 12px;
+  font-size: 0.88rem;
+  color: #9ca3af;
+}
+
+.accordion-answer {
+  margin: 0;
+  line-height: 1.8;
+  color: #d1d5db;
+  overflow-wrap: break-word;
+}
+
+.interview-page__content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.interview-page__summary-card {
+  padding: 28px;
+}
+
+.summary-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.summary-card__label {
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #94a3b8;
+}
+
+.summary-card__title {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  line-height: 1.1;
+  color: #f8fafc;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.summary-card__score {
+  min-width: 72px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #10b981;
+  flex-shrink: 0;
+}
+
+.summary-card__text,
+.summary-card__small {
+  margin: 0;
+  color: #cbd5e1;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.summary-card__text {
+  margin-bottom: 16px;
+  line-height: 1.75;
+}
+
+.interview-page__section {
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.interview-page__section:last-of-type {
+  border-bottom: none;
+}
+
+.section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.section-title-row h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #f8fafc;
+}
+
+.section-title-row span {
+  color: #94a3b8;
+  font-size: 0.92rem;
+  flex-shrink: 0;
+}
+
+.question-list {
+  display: grid;
+  gap: 16px;
+}
+
+.technical-question-card {
+  padding: 22px;
+}
+
+.technical-question-card__intent {
+  margin: 0 0 12px;
+  font-size: 0.82rem;
+  color: #94a3b8;
+}
+
+.technical-question-card h3 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+  color: #f8fafc;
+  overflow-wrap: break-word;
+}
+
+.technical-question-card p {
+  margin: 0;
+  line-height: 1.75;
+  color: #d1d5db;
+  overflow-wrap: break-word;
+}
+
+.meta-card {
+  margin-bottom: 24px;
+}
+
+.meta-card:last-child {
+  margin-bottom: 0;
+}
+
+.meta-card h3 {
+  margin: 0 0 14px;
+  font-size: 1rem;
+  color: #f8fafc;
+}
+
+.meta-card__list {
+  display: grid;
+  gap: 12px;
+}
+
+.meta-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  min-width: 0;
+}
+
+.meta-chip span {
+  color: #f8fafc;
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  overflow-wrap: break-word;
+}
+
+.meta-chip small {
+  color: #94a3b8;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.meta-chip--high {
+  border-left: 4px solid #ef4444;
+}
+
+.meta-chip--medium {
+  border-left: 4px solid #f59e0b;
+}
+
+.meta-chip--low {
+  border-left: 4px solid #10b981;
+}
+
+.meta-card__tags {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.meta-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  color: #f8fafc;
+  font-size: 0.95rem;
+}
+
+.roadmap-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.roadmap-card {
+  padding: 20px;
+}
+
+.roadmap-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.roadmap-card__header span {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.roadmap-card__header strong {
+  display: block;
+  font-size: 1rem;
+  color: #f8fafc;
+}
+
+.roadmap-card ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #cbd5e1;
+  line-height: 1.7;
+}
+
+.roadmap-timeline {
+  display: grid;
+  gap: 16px;
+}
+
+.timeline-step {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  padding: 22px;
+  background: #10131d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+}
+
+.timeline-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  padding: 16px;
+  border-radius: 22px;
+  background: rgba(244, 63, 94, 0.14);
+  color: #f8fafc;
+  font-weight: 700;
+}
+
+.timeline-content strong {
+  display: block;
+  margin-bottom: 12px;
+  color: #f8fafc;
+}
+
+.timeline-content ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #cbd5e1;
+  line-height: 1.75;
+}
+
+.timeline-content li {
+  margin-bottom: 8px;
+  overflow-wrap: break-word;
+}
+
+.score-card {
+  padding: 24px;
+  background: #12141c;
+  border-radius: 24px;
+}
+
+.score-ring {
+  margin: 20px auto 0;
+  width: 170px;
+  height: 170px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(16, 185, 129, 0.12), transparent 58%);
+  position: relative;
+}
+
+.score-ring::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 10px;
+  background: conic-gradient(
+    rgba(236, 72, 153, 0.9) calc(var(--score) * 1%),
+    rgba(148, 163, 184, 0.18) 0
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 12px), #000 calc(100% - 11px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 12px), #000 calc(100% - 11px));
+}
+
+.score-ring__fill {
+  position: relative;
+  z-index: 1;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #0b1119;
+  color: #f8fafc;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.roadmap-card li {
+  margin-bottom: 8px;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 1100px) {
+  .interview-page__wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .interview-page__meta,
+  .interview-page__sidebar {
+    position: static;
+  }
+
+  .interview-page__meta {
+    order: -1;
+  }
+}
+
+@media (max-width: 720px) {
+  .interview-page {
+    padding: 18px;
+  }
+
+  .interview-page__sidebar,
+  .interview-page__meta,
+  .interview-page__summary-card,
+  .technical-question-card,
+  .roadmap-card {
+    padding: 20px;
+  }
+}

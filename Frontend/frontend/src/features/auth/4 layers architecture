@@ -1,0 +1,15 @@
+4 layers architecture
+UI
+=>componenet
+=> pages
+
+Hook
+=>hook
+State data store
+=>auth.context.jsx
+=>ai.context.jx
+
+Api
+=> services
+=> auth.api.js
+
