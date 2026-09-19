@@ -4,13 +4,16 @@ const jwt = require("jsonwebtoken");
 const tokenBlacklistModel = require('../models/blacklist.model');
 
 async function registerUserController(req, res) {
-    const { username, email, password } = req.body;
+    let { username, email, password } = req.body;
 
     if (!username || !email || !password) {
         return res.status(400).json({
             message: "Please provide username, email and password"
         });
     }
+
+    email = email.toLowerCase().trim();
+    username = username.trim();
 
     const isUserAlreadyExist = await userModel.findOne({
         $or: [{ username }, { email }]
@@ -48,10 +51,11 @@ async function registerUserController(req, res) {
 }
 
 async function loginUserController(req, res) {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
 
-   // const user = await userModel.findOne({ email });
-   const user = await userModel.findOne({ email: email.toLowerCase().trim() });
+    email = email.toLowerCase().trim();
+
+    const user = await userModel.findOne({ email });
 
     if (!user) {
         return res.status(400).json({
@@ -125,7 +129,3 @@ module.exports = {
     logoutUserController,
     getMeController,
 };
-
-    
-
-    
