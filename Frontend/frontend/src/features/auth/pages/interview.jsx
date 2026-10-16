@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import '../interview/style/interview.scss';
@@ -23,6 +24,15 @@ const severityClass = severity => {
   }
 };
 
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 const Interview = () => {
   const { interviewId } = useParams();
   const { user } = useContext(AuthContext);
@@ -38,6 +48,7 @@ const Interview = () => {
         setLoading(false);
         return;
       }
+
       try {
         const data = await getInterviewById(interviewId);
         setReport(data.interviewReport);
@@ -48,6 +59,7 @@ const Interview = () => {
         setLoading(false);
       }
     };
+
     fetchReport();
   }, [interviewId]);
 
@@ -57,36 +69,170 @@ const Interview = () => {
 
   const handleDownload = async () => {
     if (!report) return;
+
+    let pdfUrl;
+
     try {
       setDownloading(true);
 
-      //const response = await fetch('http://localhost:3000/api/generate-resume-pdf', {
-      fetch('https://resume-analyzer-8ls7.onrender.com/api/generate-resume-pdf', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          resume: report.resume,
-          selfDescription: report.selfDescription,
-          jobDescription: report.jobDescription,
-          candidateName: report.title?.split(' - ')[1] || '',
-          candidateEmail: user?.email || '',
-        }),
-      });
+      const technicalQuestions = report.technicalQuestions || [];
+      const behavioralQuestions = report.behavioralQuestions || [];
+      const skillGaps = report.skillGaps || [];
+      const preparationPlan = report.preparationPlan || [];
 
-      if (!response.ok) throw new Error('Resume PDF generation failed');
+      const html = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="UTF-8" />
+            <title>Interview Report</title>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                color: #222;
+                line-height: 1.6;
+                padding: 24px;
+              }
+              h1, h2 {
+                color: #5b21b6;
+              }
+              h1 {
+                border-bottom: 2px solid #7c3aed;
+                padding-bottom: 10px;
+              }
+              .section {
+                margin-bottom: 24px;
+              }
+              .question {
+                margin-bottom: 18px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid #ddd;
+                page-break-inside: avoid;
+              }
+              .score {
+                font-size: 22px;
+                font-weight: bold;
+              }
+            </style>
+          </head>
+          <body>
+            <h1>Interview Report</h1>
+
+            <div class="section">
+              <p class="score">
+                Match Score: ${escapeHtml(report.matchScore ?? 0)}%
+              </p>
+              <h2>Job Description</h2>
+              <p>${escapeHtml(report.jobDescription || 'Not provided')}</p>
+              <h2>Self Description</h2>
+              <p>${escapeHtml(report.selfDescription || 'Not provided')}</p>
+            </div>
+
+            <div class="section">
+              <h2>Technical Questions</h2>
+              ${
+                technicalQuestions.length
+                  ? technicalQuestions.map((item, index) => `
+                    <div class="question">
+                      <strong>Q${index + 1}: ${escapeHtml(item.question)}</strong>
+                      <p>${escapeHtml(item.intention || '')}</p>
+                      <p><strong>Answer:</strong> ${escapeHtml(item.answer || '')}</p>
+                    </div>
+                  `).join('')
+                  : '<p>No technical questions available.</p>'
+              }
+            </div>
+
+            <div class="section">
+              <h2>Behavioral Questions</h2>
+              ${
+                behavioralQuestions.length
+                  ? behavioralQuestions.map((item, index) => `
+                    <div class="question">
+                      <strong>Q${index + 1}: ${escapeHtml(item.question)}</strong>
+                      <p>${escapeHtml(item.intention || '')}</p>
+                      <p><strong>Answer:</strong> ${escapeHtml(item.answer || '')}</p>
+                    </div>
+                  `).join('')
+                  : '<p>No behavioral questions available.</p>'
+              }
+            </div>
+
+            <div class="section">
+              <h2>Skill Gaps</h2>
+              ${
+                skillGaps.length
+                  ? `<ul>${skillGaps.map(gap => `
+                      <li>
+                        ${escapeHtml(gap.skill)} -
+                        ${escapeHtml(gap.severity)}
+                      </li>
+                    `).join('')}</ul>`
+                  : '<p>No skill gaps available.</p>'
+              }
+            </div>
+
+            <div class="section">
+              <h2>Preparation Roadmap</h2>
+              ${
+                preparationPlan.length
+                  ? preparationPlan.map(item => `
+                    <div class="question">
+                      <h3>Day ${escapeHtml(item.day)}: ${escapeHtml(item.focus)}</h3>
+                      <ul>
+                        ${(item.tasks || []).map(task => `
+                          <li>${escapeHtml(task)}</li>
+                        `).join('')}
+                      </ul>
+                    </div>
+                  `).join('')
+                  : '<p>No preparation roadmap available.</p>'
+              }
+            </div>
+          </body>
+        </html>
+      `;
+
+      const response = await fetch(
+        'https://resume-analyzer-8ls7.onrender.com/api/generate-pdf',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ html }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(
+          `PDF generation failed (${response.status}): ${errorMessage}`
+        );
+      }
 
       const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
+
+      if (blob.type && !blob.type.includes('pdf')) {
+        throw new Error('The server did not return a PDF file.');
+      }
+
+      pdfUrl = window.URL.createObjectURL(blob);
+
       const link = document.createElement('a');
-      link.href = url;
-      link.download = `Resume-${interviewId || 'candidate'}.pdf`;
+      link.href = pdfUrl;
+      link.download = `Interview-Report-${interviewId || 'report'}.pdf`;
+
       document.body.appendChild(link);
       link.click();
       link.remove();
-      window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error('Download failed:', err);
+      alert('PDF download failed. Please check the browser console and Render logs.');
     } finally {
+      if (pdfUrl) {
+        window.URL.revokeObjectURL(pdfUrl);
+      }
       setDownloading(false);
     }
   };
@@ -104,6 +250,7 @@ const Interview = () => {
       <div className="interview-page__wrapper">
         <aside className="interview-page__sidebar">
           <div className="interview-page__sidebar-header">Sections</div>
+
           <div className="interview-page__sidebar-list">
             {sections.map(section => (
               <button
@@ -137,7 +284,7 @@ const Interview = () => {
               alignItems: 'center',
               justifyContent: 'center',
               gap: '10px',
-              cursor: 'pointer',
+              cursor: downloading ? 'not-allowed' : 'pointer',
               marginTop: '16px',
             }}
           >
@@ -149,9 +296,10 @@ const Interview = () => {
               height="26"
               style={{ flexShrink: 0 }}
             >
-              <path d="M8.64445 2.55279C8.39746 2.05881 7.79679 1.85859 7.30281 2.10558C6.80883 2.35257 6.60861 2.95324 6.8556 3.44722L9.68128 9.09859L5.06655 5.92596C4.61145 5.61308 3.98887 5.72837 3.67598 6.18348C3.3631 6.63858 3.47839 7.26116 3.9335 7.57405L9.40503 11.3357L3.05258 11.0014C2.50106 10.9724 2.03043 11.3959 2.00141 11.9474C1.97238 12.499 2.39594 12.9696 2.94747 12.9986L8.74187 13.3036L4.44532 16.168C3.9858 16.4743 3.86162 17.0952 4.16797 17.5547C4.47433 18.0142 5.0952 18.1384 5.55473 17.8321L9.19687 15.404L6.68629 18.9188C6.36528 19.3682 6.46937 19.9927 6.91879 20.3137C7.3682 20.6347 7.99275 20.5307 8.31376 20.0812L11.3471 15.8345L10.5136 20.8356C10.4228 21.3804 10.7909 21.8956 11.3356 21.9864C11.8804 22.0772 12.3956 21.7092 12.4864 21.1644L13.2883 16.3532L15.6588 20.0408C15.9575 20.5053 16.5762 20.6398 17.0408 20.3412C17.5054 20.0425 17.6399 19.4238 17.3412 18.9592L15.5553 16.1812L18.3217 18.7348C18.7276 19.1094 19.3602 19.0841 19.7348 18.6783C20.1094 18.2725 20.0841 17.6398 19.6783 17.2652L16.6427 14.4631L20.876 14.9923C21.424 15.0608 21.9238 14.6721 21.9923 14.124C22.0608 13.576 21.6721 13.0762 21.1241 13.0077L16.9342 12.484L21.2291 11.4734C21.7667 11.3469 22.0999 10.8086 21.9734 10.271C21.8469 9.73336 21.3086 9.40009 20.771 9.52659L15.1819 10.8417L19.2863 5.61783C19.6276 5.18356 19.5521 4.5549 19.1178 4.21369C18.6836 3.87247 18.0549 3.94791 17.7137 4.38218L13.8574 9.29015L14.738 3.65438C14.8233 3.10872 14.4501 2.59725 13.9044 2.51199C13.3587 2.42673 12.8473 2.79996 12.762 3.34563L11.876 9.01594L8.64445 2.55279Z"></path>
+              <path d="M8.64445 2.55279C8.39746 2.05881 7.79679 1.85859 7.30281 2.10558C6.80883 2.35257 6.60861 2.95324 6.8556 3.44722L9.68128 9.09859L5.06655 5.92596C4.61145 5.61308 3.98887 5.72837 3.67598 6.18348C3.3631 6.63858 3.47839 7.26116 3.9335 7.57405L9.40503 11.3357L3.05258 11.0014C2.50106 10.9724 2.03043 11.3959 2.00141 11.9474C1.97238 12.499 2.39594 12.9696 2.94747 12.9986L8.74187 13.3036L4.44532 16.168C3.9858 16.4743 3.86162 17.0952 4.16797 17.5547C4.47432 18.0142 5.0952 18.1384 5.55473 17.8321L9.19687 15.404L6.68629 18.9188C6.36528 19.3682 6.46937 19.9927 6.91879 20.3137C7.4749 20.5053 7.99275 20.6398 8.31376 20.0812L11.3471 15.8345L10.5136 20.8356C10.4228 21.3804 10.7909 21.8956 11.3356 21.9864C11.8804 22.0772 12.3956 21.7092 12.4864 21.1644L13.2883 16.3532L15.6588 20.0408C15.9575 20.5053 16.5762 20.6398 17.0408 20.3412C17.5053 20.0422 17.6399 19.4238 17.3412 18.9592L15.5553 16.1812L18.3217 18.7348C18.7276 19.1094 19.3602 19.0841 19.7348 18.6783C20.1094 18.2725 20.1094 17.6398 19.6783 17.2652L16.6427 14.4631L20.876 14.9923C21.424 15.0608 21.9923 14.6721 21.9734 10.271C21.8469 9.73336 21.3086 9.40009 20.771 9.52659L15.1819 10.8417L19.2863 5.61783C19.6276 5.18356 19.5521 4.5549 19.1178 4.21369L13.8574 9.29015L14.738 3.65438C14.8233 3.10872 14.4501 2.59725 13.9044 2.51199C13.3587 2.42673 12.762 2.59725 12.762 3.34563L11.876 9.01594L8.64445 2.55279Z" />
             </svg>
-            {downloading ? 'Downloading...' : 'Download Resume'}
+
+            {downloading ? 'Downloading...' : 'Download Report PDF'}
           </button>
         </aside>
 
@@ -174,9 +322,11 @@ const Interview = () => {
                 <h2>Technical Questions</h2>
                 <span>{report.technicalQuestions?.length} Questions</span>
               </div>
+
               <div className="accordion-list">
                 {report.technicalQuestions?.map((item, index) => {
                   const expanded = expandedIndex === index;
+
                   return (
                     <div className="accordion-card" key={index}>
                       <button
@@ -189,8 +339,11 @@ const Interview = () => {
                           <span className="accordion-number">Q{index + 1}</span>
                           <span className="accordion-question">{item.question}</span>
                         </div>
-                        <span className="accordion-icon">{expanded ? '−' : '+'}</span>
+                        <span className="accordion-icon">
+                          {expanded ? '−' : '+'}
+                        </span>
                       </button>
+
                       {expanded && (
                         <div className="accordion-panel">
                           <p className="accordion-intent">{item.intention}</p>
@@ -210,9 +363,11 @@ const Interview = () => {
                 <h2>Behavioral Questions</h2>
                 <span>{report.behavioralQuestions?.length} Questions</span>
               </div>
+
               <div className="accordion-list">
                 {report.behavioralQuestions?.map((item, index) => {
                   const expanded = expandedIndex === index;
+
                   return (
                     <div className="accordion-card" key={index}>
                       <button
@@ -225,8 +380,11 @@ const Interview = () => {
                           <span className="accordion-number">Q{index + 1}</span>
                           <span className="accordion-question">{item.question}</span>
                         </div>
-                        <span className="accordion-icon">{expanded ? '−' : '+'}</span>
+                        <span className="accordion-icon">
+                          {expanded ? '−' : '+'}
+                        </span>
                       </button>
+
                       {expanded && (
                         <div className="accordion-panel">
                           <p className="accordion-intent">{item.intention}</p>
@@ -246,6 +404,7 @@ const Interview = () => {
                 <h2>Roadmap</h2>
                 <span>{report.preparationPlan?.length} Days</span>
               </div>
+
               <div className="roadmap-timeline">
                 {report.preparationPlan?.map(item => (
                   <div className="timeline-step" key={item.day}>
@@ -270,8 +429,14 @@ const Interview = () => {
         <aside className="interview-page__meta">
           <div className="score-card">
             <h3>Match Score</h3>
-            <div className="score-ring" aria-label={`Match score ${report.matchScore}%`}>
-              <div className="score-ring__fill" style={{ '--score': report.matchScore }}>
+            <div
+              className="score-ring"
+              aria-label={`Match score ${report.matchScore}%`}
+            >
+              <div
+                className="score-ring__fill"
+                style={{ '--score': report.matchScore }}
+              >
                 <span>{report.matchScore}%</span>
               </div>
             </div>
@@ -281,7 +446,10 @@ const Interview = () => {
             <h3>Skill Gaps</h3>
             <div className="meta-card__list">
               {report.skillGaps?.map((gap, index) => (
-                <div key={index} className={`meta-chip ${severityClass(gap.severity)}`}>
+                <div
+                  key={index}
+                  className={`meta-chip ${severityClass(gap.severity)}`}
+                >
                   <span>{gap.skill}</span>
                   <small>{gap.severity}</small>
                 </div>
